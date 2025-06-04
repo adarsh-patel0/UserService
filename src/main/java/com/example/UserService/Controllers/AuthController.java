@@ -6,11 +6,14 @@ import com.example.UserService.Dtos.UserDto;
 import com.example.UserService.Models.User;
 import com.example.UserService.Services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 public class AuthController {
@@ -26,12 +29,12 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<UserDto>login(@RequestBody LoginRequestDto loginRequestDto){
-        try{
-            User user = authService.SignUp(loginRequestDto.getEmail(),loginRequestDto.getPassword());
-            UserDto userDto = getUserDto(user);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
-        }catch (Exception ex){
+    public ResponseEntity<UserDto> login(@RequestBody LoginRequestDto loginRequestDto){
+        try {
+            Pair<User, MultiValueMap<String,String>> bodyWithHeaders = authService.LogIn(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+            UserDto userDto = getUserDto(bodyWithHeaders.a);
+            return new ResponseEntity<>(userDto, bodyWithHeaders.b, HttpStatus.OK);
+        }catch (Exception ex) {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
