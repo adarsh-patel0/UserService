@@ -5,8 +5,8 @@ import com.example.UserService.Dtos.SignupRequestDto;
 import com.example.UserService.Dtos.UserDto;
 import com.example.UserService.Models.User;
 import com.example.UserService.Services.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.antlr.v4.runtime.misc.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -31,13 +31,20 @@ public class AuthController {
     @PostMapping("/auth/login")
     public ResponseEntity<UserDto> login(@RequestBody LoginRequestDto loginRequestDto){
         try {
-            Pair<User, MultiValueMap<String,String>> bodyWithHeaders = authService.LogIn(loginRequestDto.getEmail(), loginRequestDto.getPassword());
-            UserDto userDto = getUserDto(bodyWithHeaders.a);
-            return new ResponseEntity<>(userDto, bodyWithHeaders.b, HttpStatus.OK);
+            Pair<User, MultiValueMap<String,String>> user = authService.LogIn(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+            UserDto userDto = getUserDto(user.a);
+            return new ResponseEntity<>(userDto,user.b, HttpStatus.OK);
         }catch (Exception ex) {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
+
+
+//    @PostMapping("/auth/validate")
+//    public ResponseEntity<Boolean> validateToken(@RequestBody ValidateRequestDto validateRequestDto) {
+//        Boolean isValid = authService.validateToken(validateRequestDto.getToken(),validateRequestDto.getUserId());
+//        return new ResponseEntity<>(isValid,HttpStatus.OK);
+//    }
 
     private UserDto getUserDto(User user){
         UserDto userDto = new UserDto();
