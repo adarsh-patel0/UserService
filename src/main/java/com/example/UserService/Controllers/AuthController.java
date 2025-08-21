@@ -3,6 +3,7 @@ package com.example.UserService.Controllers;
 import com.example.UserService.Dtos.LoginRequestDto;
 import com.example.UserService.Dtos.SignupRequestDto;
 import com.example.UserService.Dtos.UserDto;
+import com.example.UserService.Dtos.ValidateRequestDto;
 import com.example.UserService.Models.User;
 import com.example.UserService.Services.AuthService;
 import org.antlr.v4.runtime.misc.Pair;
@@ -40,11 +41,11 @@ public class AuthController {
     }
 
 
-//    @PostMapping("/auth/validate")
-//    public ResponseEntity<Boolean> validateToken(@RequestBody ValidateRequestDto validateRequestDto) {
-//        Boolean isValid = authService.validateToken(validateRequestDto.getToken(),validateRequestDto.getUserId());
-//        return new ResponseEntity<>(isValid,HttpStatus.OK);
-//    }
+    @PostMapping("/auth/validate")
+    public ResponseEntity<Boolean> validateToken(@RequestBody ValidateRequestDto validateRequestDto) {
+        Boolean isValid = authService.validateToken(validateRequestDto.getToken(),validateRequestDto.getUserId());
+        return new ResponseEntity<>(isValid,HttpStatus.OK);
+    }
 
     private UserDto getUserDto(User user){
         UserDto userDto = new UserDto();
