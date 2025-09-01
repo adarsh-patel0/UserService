@@ -1,5 +1,6 @@
 package com.example.UserService.Services;
 
+import com.example.UserService.Clients.KafkaProducerClient;
 import com.example.UserService.Dtos.SendEmailMessageDto;
 import com.example.UserService.Models.Session;
 import com.example.UserService.Models.SessionStatus;
@@ -41,8 +42,8 @@ public class AuthService {
     @Autowired
     private SecretKey secretKey;
 
-//    @Autowired
-//    private KafkaProducerClient kafkaProducerClient;
+    @Autowired
+    private KafkaProducerClient kafkaProducerClient;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -60,16 +61,16 @@ public class AuthService {
         }
 
         //Put message in Queue
-//        try {
-//            SendEmailMessageDto sendEmailMessageDto = new SendEmailMessageDto();
-//            sendEmailMessageDto.setTo(email);
-//            sendEmailMessageDto.setFrom("admin@scaler.com");
-//            sendEmailMessageDto.setSubject("Welcome to Scaler");
-//            sendEmailMessageDto.setBody("Have a pleasant stay");
-//            kafkaProducerClient.sendMessage("sendEmail", objectMapper.writeValueAsString(sendEmailMessageDto));
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            SendEmailMessageDto sendEmailMessageDto = new SendEmailMessageDto();
+            sendEmailMessageDto.setTo(email);
+            sendEmailMessageDto.setFrom("admin@scaler.com");
+            sendEmailMessageDto.setSubject("Welcome to Scaler");
+            sendEmailMessageDto.setBody("Have a pleasant stay");
+            kafkaProducerClient.sendMessage("sendEmail", objectMapper.writeValueAsString(sendEmailMessageDto));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return userOptional.get();
     }
 
