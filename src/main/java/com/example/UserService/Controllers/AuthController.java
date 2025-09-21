@@ -13,23 +13,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<UserDto> signup(@RequestBody SignupRequestDto signupRequestDto){
         User user = authService.SignUp(signupRequestDto.getEmail(),signupRequestDto.getPassword());
         UserDto userDto = getUserDto(user);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody LoginRequestDto loginRequestDto){
         try {
             Pair<User, MultiValueMap<String,String>> user = authService.LogIn(loginRequestDto.getEmail(), loginRequestDto.getPassword());
@@ -41,7 +43,7 @@ public class AuthController {
     }
 
 
-    @PostMapping("/auth/validate")
+    @PostMapping("/validate")
     public ResponseEntity<Boolean> validateToken(@RequestBody ValidateRequestDto validateRequestDto) {
         Boolean isValid = authService.validateToken(validateRequestDto.getToken(),validateRequestDto.getUserId());
         return new ResponseEntity<>(isValid,HttpStatus.OK);

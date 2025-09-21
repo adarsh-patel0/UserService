@@ -23,7 +23,7 @@ public class UserController {
     private UserDto getUserDto(User user){
         UserDto userDto = new UserDto();
         userDto.setRoles(user.getRoles());
-        userDto.setEmail(userDto.getEmail());
+        userDto.setEmail(user.getEmail());
         return userDto;
     }
 
